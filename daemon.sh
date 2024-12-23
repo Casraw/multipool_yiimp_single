@@ -71,11 +71,11 @@ echo -e "$GREEN Berkeley 5.3 Completed...$COL_RESET"
 if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
   DISTRO=18
   sudo chmod g-w /etc /etc/default /usr
-else [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" != "Ubuntu 16.04 LTS" ];
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" == "Ubuntu 16.04 LTS" ]; then
   DISTRO=16
-else [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" != "Ubuntu 20.04 LTS" ];
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" == "Ubuntu 20.04.6 LTS" ]; then
   DISTRO=20
-else [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" != "Ubuntu 22.04 LTS" ];
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
   DISTRO=22
 else
   echo "This script is meant for Ubuntu 18.04, 16.04, 20.04 and 22.04!"

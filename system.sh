@@ -50,9 +50,9 @@ echo -e "$GREEN Done...$COL_RESET"
 echo -e " Installing Ondrej PHP PPA...$COL_RESET"
 if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
   hide_output sudo add-apt-repository -y ppa:ondrej/php
-elseif [ ! -f /etc/apt/sources.list.d/ondrej-php-focal.list ]; then
+elif [ ! -f /etc/apt/sources.list.d/ondrej-php-focal.list ]; then
   hide_output sudo add-apt-repository -y ppa:ondrej/php
-elseif [ ! -f /etc/apt/sources.list.d/ondrej-php-jammy.list ]; then
+elif [ ! -f /etc/apt/sources.list.d/ondrej-php-jammy.list ]; then
   hide_output sudo add-apt-repository -y ppa:ondrej/php
 fi
 echo -e "$GREEN Done...$COL_RESET"
@@ -67,13 +67,13 @@ echo -e " Installing MariaDB Repository...$COL_RESET"
 if [[ ("$DISTRO" == "16") ]]; then
   hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
   sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
-elseif [[ ("$DISTRO" == "18") ]]; then
+elif [[ ("$DISTRO" == "18") ]]; then
   hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
   sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
-elseif [[ ("$DISTRO" == "20") ]]; then
+elif [[ ("$DISTRO" == "20") ]]; then
   hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
   sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu focal main' >/dev/null 2>&1
-elseif [[ ("$DISTRO" == "22") ]]; then
+elif [[ ("$DISTRO" == "22") ]]; then
   hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
   sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.6/ubuntu jammy main' >/dev/null 2>&1
 fi
@@ -164,7 +164,7 @@ libkrb5-dev libldap2-dev libidn11-dev gnutls-dev librtmp-dev \
 build-essential libtool autotools-dev automake pkg-config libevent-dev bsdmainutils libssl-dev \
 automake cmake gnupg2 ca-certificates lsb-release nginx certbot libsodium-dev \
 libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev
-elseif [[ ("$DISTRO" == "18") ]]; then
+elif [[ ("$DISTRO" == "18") ]]; then
 apt_install php7.3-fpm php7.3-opcache php7.3-fpm php7.3 php7.3-common php7.3-gd \
 php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi \
 php-pear php-auth-sasl mcrypt imagemagick libruby \
