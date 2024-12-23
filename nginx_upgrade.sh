@@ -42,9 +42,12 @@ sudo cp -r nginx_confs/security.conf /etc/nginx/cryptopool.builders
 sudo cp -r nginx_confs/letsencrypt.conf /etc/nginx/cryptopool.builders
 
 # Removing default nginx site configs.
-sudo rm -r /etc/nginx/conf.d/default.conf
-sudo rm -r /etc/nginx/sites-enabled/default*
-sudo rm -r /etc/nginx/sites-available/default*
+sudo mkdir -p /etc/nginx/conf.d || true
+sudo rm -r /etc/nginx/conf.d/default.conf || true
+sudo mkdir -p /etc/nginx/sites-enabled || true
+sudo rm -r /etc/nginx/sites-enabled/default* || true
+sudo mkdir -p /etc/nginx/sites-available || true
+sudo rm -r /etc/nginx/sites-available/default* || true
 
 echo -e "$GREEN NGINX upgrade complete...$COL_RESET"
 restart_service nginx
