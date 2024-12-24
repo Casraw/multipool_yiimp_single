@@ -18,9 +18,28 @@ function print_error {
 }
 trap print_error ERR
 
+if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
+  DISTRO=18
+  sudo chmod g-w /etc /etc/default /usr
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" == "Ubuntu 16.04 LTS" ]; then
+  DISTRO=16
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" == "Ubuntu 20.04 LTS" ]; then
+  DISTRO=20
+elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
+  DISTRO=22
+else
+  echo "This script is meant for Ubuntu 18.04, 16.04, 20.04 and 22.04!"
+  exit
+fi
 
+if [ $DISTRO == 20 ] then
 echo -e " Installing BitCoin PPA...$COL_RESET"
 if [ ! -f /etc/apt/sources.list.d/bitcoin.list ]; then
+hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
+sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
+sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
+sudo apt update
+else
 hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
 fi
 
