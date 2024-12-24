@@ -18,30 +18,39 @@ function print_error {
 }
 trap print_error ERR
 
-if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
-  DISTRO=18
-  sudo chmod g-w /etc /etc/default /usr
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" == "Ubuntu 16.04 LTS" ]; then
-  DISTRO=16
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" == "Ubuntu 20.04 LTS" ]; then
-  DISTRO=20
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
-  DISTRO=22
-else
-  echo "This script is meant for Ubuntu 18.04, 16.04, 20.04 and 22.04!"
-  exit
-fi
-
-if [ $DISTRO == 20 ] then
 echo -e " Installing BitCoin PPA...$COL_RESET"
-if [ ! -f /etc/apt/sources.list.d/bitcoin.list ]; then
-hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
-sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
-sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
-sudo apt update
-else
-hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
-fi
+# Distro-Version extrahieren
+DISTRO_VERSION=$(lsb_release -rs)
+
+# Basierend auf der Version die Aktionen durchführen
+case "$DISTRO_VERSION" in
+  18.04|18.04.[0-9])
+    DISTRO=18
+    hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    ;;
+  16.04|16.04.[0-9])
+    DISTRO=16
+    hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    ;;
+  20.04|20.04.[0-9])
+    DISTRO=20
+    hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
+    sudo sed -i 's|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu focal main|http://ppa.launchpad.net/bitcoin/bitcoin/ubuntu bionic main|g' /etc/apt/sources.list.d/bitcoin-ubuntu-bitcoin-focal.list
+    sudo apt update
+    ;;
+  22.04|22.04.[0-9])
+    DISTRO=22
+    hide_output sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    ;;
+  *)
+    echo "This script is meant for Ubuntu 18.04, 16.04, 20.04, and 22.04!"
+    exit 1
+    ;;
+esac
+
+echo "Detected Ubuntu version: $DISTRO_VERSION (DISTRO=$DISTRO)"
+
 
 echo -e " Installing additional system files required for daemons...$COL_RESET"
 hide_output sudo apt-get update
@@ -87,45 +96,74 @@ cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
 sudo rm -r db-5.3.28.tar.gz db-5.3.28
 echo -e "$GREEN Berkeley 5.3 Completed...$COL_RESET"
 
-if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
-  DISTRO=18
-  sudo chmod g-w /etc /etc/default /usr
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" == "Ubuntu 16.04 LTS" ]; then
-  DISTRO=16
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" == "Ubuntu 20.04 LTS" ]; then
-  DISTRO=20
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
-  DISTRO=22
-else
-  echo "This script is meant for Ubuntu 18.04, 16.04, 20.04 and 22.04!"
-  exit
-fi
+# Distro-Version extrahieren
+DISTRO_VERSION=$(lsb_release -rs)
 
-if [ $DISTRO == 18 ] || [ $DISTRO == 16 ]; then
-echo -e " Building OpenSSL 1.0.2g, this may take several minutes...$COL_RESET"
-cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
-hide_output sudo wget https://www.openssl.org/source/old/1.0.2/openssl-1.0.2g.tar.gz --no-check-certificate
-hide_output sudo tar -xf openssl-1.0.2g.tar.gz
-cd openssl-1.0.2g
-hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
-hide_output sudo make
-hide_output sudo make install
-cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
-sudo rm -r openssl-1.0.2g.tar.gz openssl-1.0.2g
-echo -e "$GREEN OpenSSL 1.0.2g Completed...$COL_RESET"
-else
-  echo -e " Building OpenSSL 1.1.1w, this may take several minutes...$COL_RESET"
-  cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
-  hide_output sudo wget https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz --no-check-certificate
-  hide_output sudo tar -xf openssl-1.1.1w.tar.gz
-  cd openssl-1.1.1w
-  hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
-  hide_output sudo make
-  hide_output sudo make install
-  cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
-  sudo rm -r openssl-1.1.1w.tar.gz openssl-1.1.1w
-  echo -e "$GREEN OpenSSL 1.1.1w Completed...$COL_RESET"
-fi
+# Basierend auf der Version die Aktionen durchführen
+case "$DISTRO_VERSION" in
+  18.04|18.04.[0-9])
+    DISTRO=18
+    echo -e " Building OpenSSL 1.0.2g, this may take several minutes...$COL_RESET"
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    hide_output sudo wget https://www.openssl.org/source/old/1.0.2/openssl-1.0.2g.tar.gz --no-check-certificate
+    hide_output sudo tar -xf openssl-1.0.2g.tar.gz
+    cd openssl-1.0.2g
+    hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
+    hide_output sudo make
+    hide_output sudo make install
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    sudo rm -r openssl-1.0.2g.tar.gz openssl-1.0.2g
+    echo -e "$GREEN OpenSSL 1.0.2g Completed...$COL_RESET"
+    ;;
+  16.04|16.04.[0-9])
+    DISTRO=16
+    echo -e " Building OpenSSL 1.0.2g, this may take several minutes...$COL_RESET"
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    hide_output sudo wget https://www.openssl.org/source/old/1.0.2/openssl-1.0.2g.tar.gz --no-check-certificate
+    hide_output sudo tar -xf openssl-1.0.2g.tar.gz
+    cd openssl-1.0.2g
+    hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
+    hide_output sudo make
+    hide_output sudo make install
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    sudo rm -r openssl-1.0.2g.tar.gz openssl-1.0.2g
+    echo -e "$GREEN OpenSSL 1.0.2g Completed...$COL_RESET"
+    ;;
+  20.04|20.04.[0-9])
+    DISTRO=20
+    echo -e " Building OpenSSL 1.1.1w, this may take several minutes...$COL_RESET"
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    hide_output sudo wget https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz --no-check-certificate
+    hide_output sudo tar -xf openssl-1.1.1w.tar.gz
+    cd openssl-1.1.1w
+    hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
+    hide_output sudo make
+    hide_output sudo make install
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    sudo rm -r openssl-1.1.1w.tar.gz openssl-1.1.1w
+    echo -e "$GREEN OpenSSL 1.1.1w Completed...$COL_RESET"
+    ;;
+  22.04|22.04.[0-9])
+    DISTRO=22
+    echo -e " Building OpenSSL 1.1.1w, this may take several minutes...$COL_RESET"
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    hide_output sudo wget https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz --no-check-certificate
+    hide_output sudo tar -xf openssl-1.1.1w.tar.gz
+    cd openssl-1.1.1w
+    hide_output sudo ./config --prefix=$STORAGE_ROOT/openssl --openssldir=$STORAGE_ROOT/openssl shared zlib
+    hide_output sudo make
+    hide_output sudo make install
+    cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp
+    sudo rm -r openssl-1.1.1w.tar.gz openssl-1.1.1w
+    echo -e "$GREEN OpenSSL 1.1.1w Completed...$COL_RESET"
+    ;;
+  *)
+    echo "This script is meant for Ubuntu 18.04, 16.04, 20.04, and 22.04!"
+    exit 1
+    ;;
+esac
+
+echo "Detected Ubuntu version: $DISTRO_VERSION (DISTRO=$DISTRO)"
 
 echo -e " Building bls-signatures, this may take several minutes...$COL_RESET"
 cd $STORAGE_ROOT/yiimp/yiimp_setup/tmp

@@ -46,56 +46,58 @@ apt_install software-properties-common
 fi
 echo -e "$GREEN Done...$COL_RESET"
 
-# PHP 7
-echo -e " Installing Ondrej PHP PPA...$COL_RESET"
-if [ ! -f /etc/apt/sources.list.d/ondrej-php-bionic.list ]; then
-  hide_output sudo add-apt-repository -y ppa:ondrej/php
-elif [ ! -f /etc/apt/sources.list.d/ondrej-php-focal.list ]; then
-  hide_output sudo add-apt-repository -y ppa:ondrej/php
-elif [ ! -f /etc/apt/sources.list.d/ondrej-php-jammy.list ]; then
-  hide_output sudo add-apt-repository -y ppa:ondrej/php
-fi
-echo -e "$GREEN Done...$COL_RESET"
+# Distro-Version extrahieren
+DISTRO_VERSION=$(lsb_release -rs)
 
-if [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/18\.04\.[0-9]/18.04/' `" == "Ubuntu 18.04 LTS" ]; then
-  DISTRO=18
-  sudo chmod g-w /etc /etc/default /usr
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/16\.04\.[0-9]/16.04/' `" == "Ubuntu 16.04 LTS" ]; then
-  DISTRO=16
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/20\.04\.[0-9]/20.04/' `" == "Ubuntu 20.04 LTS" ]; then
-  DISTRO=20
-elif [ "`lsb_release -d | sed 's/.*:\s*//' | sed 's/22\.04\.[0-9]/22.04/' `" == "Ubuntu 22.04 LTS" ]; then
-  DISTRO=22
-else
-  echo "This script is meant for Ubuntu 18.04, 16.04, 20.04 and 22.04!"
-  exit
-fi
+# Basierend auf der Version die Aktionen durchführen
+case "$DISTRO_VERSION" in
+  18.04|18.04.[0-9])
+    DISTRO=18
+    hide_output sudo add-apt-repository -y ppa:ondrej/php
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo add-apt-repository -y ppa:certbot/certbot
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
+    echo -e "$GREEN Done...$COL_RESET"
+    ;;
+  16.04|16.04.[0-9])
+    DISTRO=16
+    hide_output sudo add-apt-repository -y ppa:ondrej/php
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo add-apt-repository -y ppa:certbot/certbot
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
+    echo -e "$GREEN Done...$COL_RESET"
+    ;;
+  20.04|20.04.[0-9])
+    DISTRO=20
+    hide_output sudo add-apt-repository -y ppa:ondrej/php
+    echo -e "$GREEN Done...$COL_RESET"
+    echo "No APT use snap"
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
+    echo -e "$GREEN Done...$COL_RESET"
+    ;;
+  22.04|22.04.[0-9])
+    DISTRO=22
+    hide_output sudo add-apt-repository -y ppa:ondrej/php
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo add-apt-repository -y ppa:certbot/certbot
+    echo -e "$GREEN Done...$COL_RESET"
+    hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+    sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.6/ubuntu jammy main' >/dev/null 2>&1
+    echo -e "$GREEN Done...$COL_RESET"
+    ;;
+  *)
+    echo "This script is meant for Ubuntu 18.04, 16.04, 20.04, and 22.04!"
+    exit 1
+    ;;
+esac
 
-# CertBot
-
-echo -e " Installing CertBot PPA...$COL_RESET"
-if [[ ("$DISTRO" == "20") ]]; then
-  echo "No APT use snap"
-else
-  hide_output sudo add-apt-repository -y ppa:certbot/certbot
-  echo -e "$GREEN Done...$COL_RESET"
-fi
-
-# MariaDB
-echo -e " Installing MariaDB Repository...$COL_RESET"
-if [[ ("$DISTRO" == "16") ]]; then
-  hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-  sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
-elif [[ ("$DISTRO" == "18") ]]; then
-  hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-  sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
-elif [[ ("$DISTRO" == "20") ]]; then
-  hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-  sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu focal main' >/dev/null 2>&1
-elif [[ ("$DISTRO" == "22") ]]; then
-  hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-  sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.6/ubuntu jammy main' >/dev/null 2>&1
-fi
+echo "Detected Ubuntu version: $DISTRO_VERSION (DISTRO=$DISTRO)"
 echo -e "$GREEN Done...$COL_RESET"
 
 # Upgrade System Files
