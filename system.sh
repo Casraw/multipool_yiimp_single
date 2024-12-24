@@ -59,8 +59,9 @@ case "$DISTRO_VERSION" in
     hide_output sudo add-apt-repository -y ppa:certbot/certbot
     echo -e "$GREEN Done...$COL_RESET"
     hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
+    sudo add-apt-repository 'deb [arch=amd64] http://mirror.one.com/mariadb/repo/10.4/ubuntu bionic main' >/dev/null 2>&1
     echo -e "$GREEN Done...$COL_RESET"
+    apt_install libcurl4-openssl-dev libssh-dev libbrotli-dev libnghttp2-dev
     ;;
   16.04|16.04.[0-9])
     DISTRO=16
@@ -69,8 +70,9 @@ case "$DISTRO_VERSION" in
     hide_output sudo add-apt-repository -y ppa:certbot/certbot
     echo -e "$GREEN Done...$COL_RESET"
     hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
+    sudo add-apt-repository 'deb [arch=amd64] http://mirror.one.com/mariadb/repo/10.4/ubuntu xenial main' >/dev/null 2>&1
     echo -e "$GREEN Done...$COL_RESET"
+    apt_install libcurl4-openssl-dev libssh-dev libbrotli-dev libnghttp2-dev
     ;;
   20.04|20.04.[0-9])
     DISTRO=20
@@ -79,8 +81,9 @@ case "$DISTRO_VERSION" in
     echo "No APT use snap"
     echo -e "$GREEN Done...$COL_RESET"
     hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    sudo add-apt-repository 'deb [arch=amd64,arm64,i386,ppc64el] http://mirror.one.com/mariadb/repo/10.4/ubuntu focal main' >/dev/null 2>&1
+    sudo add-apt-repository 'deb [arch=amd64] http://mirror.one.com/mariadb/repo/10.4/ubuntu focal main' >/dev/null 2>&1
     echo -e "$GREEN Done...$COL_RESET"
+    apt_install libcurl4-openssl-dev libssh-dev libbrotli-dev libnghttp2-dev
     ;;
   22.04|22.04.[0-9])
     DISTRO=22
@@ -89,8 +92,9 @@ case "$DISTRO_VERSION" in
     hide_output sudo add-apt-repository -y ppa:certbot/certbot
     echo -e "$GREEN Done...$COL_RESET"
     hide_output sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-    sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.one.com/mariadb/repo/10.6/ubuntu jammy main' >/dev/null 2>&1
+    sudo add-apt-repository 'deb [arch=amd64] http://mirror.one.com/mariadb/repo/10.6/ubuntu jammy main' >/dev/null 2>&1
     echo -e "$GREEN Done...$COL_RESET"
+    apt_install libcurl4-openssl-dev libssh-dev libbrotli-dev libnghttp2-dev
     ;;
   *)
     echo "This script is meant for Ubuntu 18.04, 16.04, 20.04, and 22.04!"
