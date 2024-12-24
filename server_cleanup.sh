@@ -6,6 +6,7 @@
 
 source /etc/functions.sh
 source $STORAGE_ROOT/yiimp/.yiimp.conf
+STORAGE_ROOT=/home/crypto-data
 cd $HOME/multipool/yiimp_single
 
 echo -e " Installing cron screens to crontab...$COL_RESET"

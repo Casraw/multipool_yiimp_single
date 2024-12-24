@@ -5,6 +5,7 @@
 #####################################################
 
 source /etc/functions.sh
+STORAGE_ROOT=/home/crypto-data
 source $STORAGE_ROOT/yiimp/.yiimp.conf
 cd $HOME/multipool/yiimp_single
 

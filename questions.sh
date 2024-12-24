@@ -7,6 +7,7 @@
 
 source /etc/functions.sh
 source /etc/multipool.conf
+STORAGE_ROOT=/home/crypto-data
 source $HOME/multipool/yiimp_single/.wireguard.install.cnf
 if [[ ("$wireguard" == "true") ]]; then
 source $STORAGE_ROOT/yiimp/.wireguard.conf

@@ -5,9 +5,10 @@
 #####################################################
 
 source /etc/functions.sh
+STORAGE_ROOT=/home/crypto-data
 source $STORAGE_ROOT/yiimp/.yiimp.conf
 source $HOME/multipool/yiimp_single/.wireguard.install.cnf
-
+STORAGE_ROOT=/home/crypto-data
 echo -e " Building blocknotify and stratum...$COL_RESET"
 
 cd $STORAGE_ROOT/yiimp/yiimp_setup/yiimp

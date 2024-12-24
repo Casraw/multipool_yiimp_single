@@ -5,6 +5,7 @@
 #####################################################
 
 source $HOME/multipool/yiimp_single/.wireguard.install.cnf
+STORAGE_ROOT=/home/crypto-data
 source $STORAGE_ROOT/yiimp/.wireguard.conf
 source /etc/multipool.conf
 

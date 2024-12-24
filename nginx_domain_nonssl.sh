@@ -5,6 +5,8 @@
 #####################################################
 source /etc/functions.sh
 source /etc/multipool.conf
+STORAGE_ROOT=/home/crypto-data
+STORAGE_ROOT=/home/crypto-data
 source $STORAGE_ROOT/yiimp/.yiimp.conf
 
 set -eu -o pipefail

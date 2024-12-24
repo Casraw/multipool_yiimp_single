@@ -7,6 +7,7 @@
 
 clear
 source /etc/functions.sh
+STORAGE_ROOT=/home/crypto-data
 source $STORAGE_ROOT/yiimp/.yiimp.conf
 source $HOME/multipool/yiimp_single/.wireguard.install.cnf
 

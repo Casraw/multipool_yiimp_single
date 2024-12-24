@@ -8,6 +8,7 @@
 
 source /etc/functions.sh
 source /etc/multipool.conf
+STORAGE_ROOT=/home/crypto-data
 
 # Ensure Python reads/writes files in UTF-8. If the machine
 # triggers some other locale in Python, like ASCII encoding,

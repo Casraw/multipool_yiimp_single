@@ -7,7 +7,7 @@
 #####################################################
 
 source /etc/functions.sh
-
+STORAGE_ROOT=/home/crypto-data
 sleep 5
 hide_output yiimp checkup
 

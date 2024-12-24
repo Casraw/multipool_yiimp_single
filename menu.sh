@@ -6,6 +6,7 @@
 #####################################################
 
 source /etc/functions.sh
+STORAGE_ROOT=/home/crypto-data
 
 RESULT=$(dialog --stdout --default-item 1 --title "Ultimate Crypto-Server Setup Installer v1.94" --menu "Choose one" -1 60 6 \
 ' ' "- For small private pools -" \
