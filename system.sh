@@ -177,7 +177,7 @@ fi
 hide_output sudo apt-get update
 
 if [[ ("$DISTRO" == "16") ]]; then
-apt_install php7.3-fpm php7.3-opcache php7.3-fpm php7.3 php7.3-common php7.3-gd \
+apt_install php7.3-fpm php7.3-opcache php7.3-gmp php7.3-fpm php7.3 php7.3-common php7.3-gd \
 php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi \
 php-pear php-auth-sasl mcrypt imagemagick libruby \
 php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3 \
@@ -191,7 +191,7 @@ build-essential libtool autotools-dev automake pkg-config libevent-dev bsdmainut
 automake cmake gnupg2 ca-certificates lsb-release nginx certbot libsodium-dev \
 libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev
 elif [[ ("$DISTRO" == "18") ]]; then
-apt_install php7.3-fpm php7.3-opcache php7.3-fpm php7.3 php7.3-common php7.3-gd \
+apt_install php7.3-fpm php7.3-opcache php7.3-gmp php7.3-fpm php7.3 php7.3-common php7.3-gd \
 php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi \
 php-pear php-auth-sasl mcrypt imagemagick libruby \
 php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3 \
@@ -205,7 +205,7 @@ build-essential libtool autotools-dev automake pkg-config libevent-dev bsdmainut
 libpsl-dev libnghttp2-dev automake cmake gnupg2 ca-certificates lsb-release nginx certbot libsodium-dev \
 libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev
 elif [[ ("$DISTRO" == "20") ]]; then
-  apt_install php7.3-fpm php7.3-opcache php7.3-fpm php7.3 php7.3-common php7.3-gd \
+  apt_install php7.3-fpm php7.3-opcache php7.3-gmp php7.3-fpm php7.3 php7.3-common php7.3-gd \
   php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi \
   php-pear php7.3-cli php7.3-xml mcrypt imagemagick libruby \
   php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3 \
@@ -223,7 +223,7 @@ elif [[ ("$DISTRO" == "20") ]]; then
   sudo snap install --classic certbot
   sudo ln -s /snap/bin/certbot /usr/bin/certbot || true
 else
-  apt_install php7.3-fpm php7.3-opcache php7.3-fpm php7.3 php7.3-common php7.3-gd \
+  apt_install php7.3-fpm php7.3-opcache php7.3-gmp php7.3-fpm php7.3 php7.3-common php7.3-gd \
   php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi \
   php-pear php-auth-sasl mcrypt imagemagick libruby \
   php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3 \
