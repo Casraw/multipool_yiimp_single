@@ -93,6 +93,9 @@ cd $STORAGE_ROOT/yiimp/yiimp_setup/yiimp/sql
 # import sql dump
 sudo zcat 2019-11-10-yiimp.sql.gz | sudo mysql -u root -p"${DBRootPassword}" "${YiiMPDBName}"
 sudo mysql -u root -p"${DBRootPassword}" "${YiiMPDBName}" --force < 2018-09-22-workers.sql
+sudo mysql -u root -p"${DBRootPassword}" "${YiiMPDBName}" --force < 2020-06-03-blocks.sql
+sudo mysql -u root -p"${DBRootPassword}" "${YiiMPDBName}" --force < 2022-10-14-shares_solo.sql
+sudo mysql -u root -p"${DBRootPassword}" "${YiiMPDBName}" --force < 2022-10-29-blocks_effort.sql
 echo -e "$GREEN Database import complete...$COL_RESET"
 
 echo -e " Tweaking MariaDB for better performance...$COL_RESET"
