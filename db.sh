@@ -33,7 +33,7 @@ CONFIG_FILE="/etc/mysql/my.cnf"
 
 # Backup der Datei erstellen
 if [ -f "$CONFIG_FILE" ]; then
-    cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"
+    sudo cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"
     echo "Backup erstellt: ${CONFIG_FILE}.bak"
 else
     echo "Fehler: $CONFIG_FILE existiert nicht!"
@@ -45,15 +45,15 @@ if grep -q "^\[mysqld\]" "$CONFIG_FILE"; then
     echo "[mysqld]-Sektion gefunden."
 else
     echo "[mysqld]-Sektion nicht gefunden. Hinzufügen..."
-    echo -e "\n[mysqld]" >> "$CONFIG_FILE"
+    sudo echo -e "\n[mysqld]" >> "$CONFIG_FILE"
 fi
 
 # Einträge für character-set-server und collation-server hinzufügen oder aktualisieren
-sed -i '/^\[mysqld\]/a character-set-server = utf8\ncollation-server = utf8_general_ci' "$CONFIG_FILE"
+sudo sed -i '/^\[mysqld\]/a character-set-server = utf8\ncollation-server = utf8_general_ci' "$CONFIG_FILE"
 
 # Änderungen anzeigen
 echo "Die folgenden Änderungen wurden vorgenommen:"
-grep -A 5 "^\[mysqld\]" "$CONFIG_FILE"
+sudo grep -A 5 "^\[mysqld\]" "$CONFIG_FILE"
 
 # MySQL-Dienst neu starten
 echo "MySQL-Dienst wird neu gestartet..."
