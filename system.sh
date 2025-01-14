@@ -219,7 +219,7 @@ elif [[ ("$DISTRO" == "20") ]]; then
   libpsl-dev libnghttp2-dev automake cmake gnupg2 ca-certificates lsb-release nginx libsodium-dev \
   libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev
   sudo pear channel-update pear.php.net
-  sudo pear install Auth_SASL
+  sudo pear install Auth_SASL || echo -e "Auth_SASL already installed"
   sudo snap install --classic certbot
   sudo ln -s /snap/bin/certbot /usr/bin/certbot || true
 else
