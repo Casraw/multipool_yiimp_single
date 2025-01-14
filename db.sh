@@ -28,6 +28,36 @@ MARIADB_VERSION='10.4'
 sudo debconf-set-selections <<< "maria-db-$MARIADB_VERSION mysql-server/root_password password $DBRootPassword"
 sudo debconf-set-selections <<< "maria-db-$MARIADB_VERSION mysql-server/root_password_again password $DBRootPassword"
 apt_install mariadb-server mariadb-client
+# Pfad zur MySQL-Konfigurationsdatei
+CONFIG_FILE="/etc/mysql/my.cnf"
+
+# Backup der Datei erstellen
+if [ -f "$CONFIG_FILE" ]; then
+    cp "$CONFIG_FILE" "${CONFIG_FILE}.bak"
+    echo "Backup erstellt: ${CONFIG_FILE}.bak"
+else
+    echo "Fehler: $CONFIG_FILE existiert nicht!"
+    exit 1
+fi
+
+# Prüfen, ob die Sektion [mysqld] existiert
+if grep -q "^\[mysqld\]" "$CONFIG_FILE"; then
+    echo "[mysqld]-Sektion gefunden."
+else
+    echo "[mysqld]-Sektion nicht gefunden. Hinzufügen..."
+    echo -e "\n[mysqld]" >> "$CONFIG_FILE"
+fi
+
+# Einträge für character-set-server und collation-server hinzufügen oder aktualisieren
+sed -i '/^\[mysqld\]/a character-set-server = utf8\ncollation-server = utf8_general_ci' "$CONFIG_FILE"
+
+# Änderungen anzeigen
+echo "Die folgenden Änderungen wurden vorgenommen:"
+grep -A 5 "^\[mysqld\]" "$CONFIG_FILE"
+
+# MySQL-Dienst neu starten
+echo "MySQL-Dienst wird neu gestartet..."
+sudo systemctl restart mysql && echo "MySQL erfolgreich neu gestartet!" || echo "Fehler beim Neustart von MySQL."
 echo -e "$GREEN MariaDB build complete...$COL_RESET"
 echo -e " Creating DB users for YiiMP...$COL_RESET"
 
